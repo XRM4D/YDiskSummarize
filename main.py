@@ -1,6 +1,7 @@
 from flask import Flask
 from src.api import api_endpoint
 
+
 host = '127.0.0.1'
 port = 5000
 

@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
-import disk
-import transcription
-import summarization
+from src import yandex, transcription, summarization
+import os
 
 api_endpoint = Blueprint('api', __name__)
 
@@ -13,11 +12,14 @@ def summarize():
         'max' not in request.json:
         return 'Missing parameters', 400
 
-    disk.download_video(request.json['link'], 'video.mp4')
-    disk.extract_audio('video.mp4', 'audio.wav')
+    yandex.download_video(request.json['link'], 'video.mp4')
+    yandex.extract_audio('video.mp4', 'audio.wav')
 
     text = transcription.transcribe_audio('audio.wav', request.json['language'])
     summarized = summarization.summarize(text, request.json['min'], request.json['max'])
+
+    os.remove("audio.wav")
+    os.remove("video.mp4")
     return jsonify({'text': summarized})
 
 
