@@ -1,6 +1,5 @@
-import sys
 from flask import Flask
-from api import api_endpoint
+from src.api import api_endpoint
 
 host = '127.0.0.1'
 port = 5000
